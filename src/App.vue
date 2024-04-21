@@ -1,61 +1,46 @@
 <template>
-  <div id="app">
-    <h1>任务栏</h1>
-    <todoInput @addTask="addTask"></todoInput>
-    <todoList :todolist="todoList"></todoList>
-    <todoButton @changeActive="changeActive"></todoButton> 
+  <div id="app" class="app-background">
+    <router-link to="/" class="rt">Home</router-link>
+    <router-link to="/todolist" class="rt">todoList</router-link>
+    <router-link to="/Biography" class="rt">Biography</router-link>
   </div>
+  <router-view></router-view>
+  <Login v-if="!authStore.isAuthenticated" />
 </template>
 
 <script>
-import todoList from "./components/todoList.vue";
-import todoButton from "./components/todoButton.vue";
-import todoInput from "./components/todoInput.vue";
+import { useAuthStore } from './store'; 
+import Login from './components/login.vue';
+
 export default {
-  name:"App",
-  data(){
+  name: "App",
+  setup() {
+    const authStore = useAuthStore(); 
     return {
-      todoList:[
-      {id:1,task:'吃饭',isCompleted:true},
-      {id:2,task:'睡觉',isCompleted:false},
-      {id:3,task:'打豆豆',isCompleted:false},
-      ],
-      active:0,
+      authStore, 
     };
   },
-
-  computed:{
-    todoList(){
-      if(this.active === 0){
-        return this.todoList;
-      }else if(this.active === 1){
-        return this.todoList.filter(item => item.isCompleted);  
-      }else{
-        return this.todoList.filter(item => !item.isCompleted);
-      }
-    },
+  components: {
+    Login, 
   },
-  methods:{
-    changeActive(active){
-         this.active = active;
-         console.log(this.active);
-    },
-    addTask(taskname){
-      this.todoList.push({
-        id:this.todoList.length + 1,
-        task:taskname,
-        isCompleted: false
-      });
-    },
-  },
-    
-  components:{
-    todoList,
-    todoButton,
-    todoInput,
-  },
-};
+}
 </script>
 
-<style>
+<style scoped>
+.rt
+{
+  width: 20px;
+  margin-left: 20px;
+  color: #fff;
+}
+.app-background
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 0 70px;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  border-bottom: 2px solid #f38181;
+}
 </style>
