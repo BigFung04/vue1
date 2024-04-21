@@ -22,6 +22,7 @@
         </div>
         <span class="badge badge-primary badge-pill" v-if="item.isCompleted">已完成</span>
         <span class="badge badge-warning badge-pill" v-else>未完成</span>
+        <button class="btn btn-danger btn-sm" @click="deleteTask(item.id)" id='delete-btn'>删除</button>
     </li>
 </ul>
   </template>
@@ -34,6 +35,11 @@
         required:true,
         default:[]
       }
+    },
+    methods: {
+    deleteTask(id) {
+      this.$emit("deleteTask", id);
+     }
     }
   };   
   </script>
