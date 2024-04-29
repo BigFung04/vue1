@@ -1,18 +1,41 @@
 <template>
   <div class="home-container">
-      <h1>主页</h1>
-      <h2 class="subtitle">Homepage</h2>
-      <head>
-      <meta name="referrer" content="no-referrer">
-      </head>
-      <img src="https://tiebapic.baidu.com/forum/w%3D580%3B/sign=249bfe87e01ea8d38a22740ca731314e/ac6eddc451da81cb2ebacaf11466d016092431a9.jpg?tbpicau=2024-04-23-05_01798c40cfe430439c8213eccbee6ec1" alt="">
+    <h1>主页</h1>
+    <h2 class="subtitle">Homepage</h2>
+    <el-image src="https://codelover.club/files/stutasks/userID_767/currNo_43/FiHNsMxsJUqhG0w0EPljRts9s4XX.png" alt="" />
   </div>
- 
 </template>
 
 <script>
+import { ref, onMounted } from 'vue';
+import { ElImage } from 'element-plus';
+import { Image } from 'vant';
+
 export default {
-  name: 'Home'
+  name: 'Home',
+  components: {
+    ElImage,
+    Image
+  },
+  setup() {
+    const isMobile = ref(false);
+    const imageComponent = ref(null);
+
+    onMounted(() => {
+      checkDeviceType();
+      window.addEventListener('resize', checkDeviceType);
+    });
+
+    const checkDeviceType = () => {
+      isMobile.value = window.innerWidth <= 768;
+      imageComponent.value = isMobile.value ? Image : ElImage;
+    };
+
+    return {
+      isMobile,
+      imageComponent
+    };
+  }
 }
 </script>
 

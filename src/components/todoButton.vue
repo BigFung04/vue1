@@ -1,56 +1,75 @@
 <template>
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button
-         type="button"
-         class="btn" 
-         :class="active === 0? 'btn-primary' : 'btn-secondary'"
-         @click="changeActive(0)"
-         >
-            全部
-        </button>
-
-        <button
-         type="button"
-         class="btn" 
-         :class="active === 1? 'btn-primary' : 'btn-secondary'"
-         @click="changeActive(1)"
-         >
-            已完成
-        </button>
-
-        <button
-         type="button"
-         class="btn" 
-         :class="active === 2? 'btn-primary' : 'btn-secondary'"
-         @click="changeActive(2)"
-         >
-            未完成
-        </button>
-
+      <el-button v-if="isMobile" 
+                 :type="active === 0 ? 'primary' : 'default'" 
+                 @click="changeActive(0)">
+        全部
+      </el-button>
+  
+      <van-button v-else 
+                  :type="active === 0 ? 'primary' : 'default'" 
+                  @click="changeActive(0)">
+        全部
+      </van-button>
+  
+      <el-button v-if="isMobile" 
+                 :type="active === 1 ? 'primary' : 'default'" 
+                 @click="changeActive(1)">
+        已完成
+      </el-button>
+  
+      <van-button v-else 
+                  :type="active === 1 ? 'primary' : 'default'" 
+                  @click="changeActive(1)">
+        已完成
+      </van-button>
+  
+      <el-button v-if="isMobile" 
+                 :type="active === 2 ? 'primary' : 'default'" 
+                 @click="changeActive(2)">
+        未完成
+      </el-button>
+  
+      <van-button v-else 
+                  :type="active === 2 ? 'primary' : 'default'" 
+                  @click="changeActive(2)">
+        未完成
+      </van-button>
     </div>
-</template>
-
-<script>
-export default{
-    name:"todoButton",
+  </template>
+  
+  <script>
+  export default {
     data() {
-        return{
-            active:0,
-        };
+      return {
+        active: 0,
+        isMobile: false
+      };
     },
-    emits:["changeActive"],
-    methods:{
-        changeActive(index) {
-            this.active = index;
-            this.$emit("changeActive",index);
-        },
+    mounted() {
+      this.checkDeviceType();
+      window.addEventListener("resize", this.checkDeviceType);
     },
-};
-</script>
-
-<style scoped>
-.btn-group {
-    width: 500px;
-    margin: 10px auto;
-}
-</style>
+    beforeDestroy() {
+      window.removeEventListener("resize", this.checkDeviceType);
+    },
+    methods: {
+      checkDeviceType() {
+        this.isMobile = window.innerWidth <= 768;
+      },
+      changeActive(index) {
+        this.active = index;
+        this.$emit("changeActive", index);
+      }
+    }
+  };
+  </script>
+  
+  <style scoped>
+  .btn-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  </style>
+  

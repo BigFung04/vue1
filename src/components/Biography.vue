@@ -3,21 +3,46 @@
     <h1 class="title">个人简介</h1>
     <h2 class="subtitle">Biography</h2>
     <div class="info">
-      <div class="left-info">
-        <p><strong>Name:</strong> 咖喱饭</p>
-        <p><strong>Class:</strong> 22软件3班</p>
-      </div>
-      <div class="right-info">
-        <p><strong>Tel:</strong> 46854654</p>
-        <p><strong>E-mail:</strong> 4654644@163.com</p>
-      </div>
+      <van-cell-group v-if="isMobile">
+        <van-cell title="Name" value="咖喱饭"></van-cell>
+        <van-cell title="Class" value="22软件3班"></van-cell>
+        <van-cell title="Tel" value="46854654"></van-cell>
+        <van-cell title="E-mail" value="4654644@163.com"></van-cell>
+      </van-cell-group>
+      <el-row v-else>
+        <el-col :span="12">
+          <p><strong>Name:</strong> 咖喱饭</p>
+          <p><strong>Class:</strong> 22软件3班</p>
+        </el-col>
+        <el-col :span="12">
+          <p><strong>Tel:</strong> 46854654</p>
+          <p><strong>E-mail:</strong> 4654644@163.com</p>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Biography'
+  name: 'Biography',
+  data() {
+    return {
+      isMobile: false
+    };
+  },
+  mounted() {
+    this.checkDeviceType();
+    window.addEventListener('resize', this.checkDeviceType);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkDeviceType);
+  },
+  methods: {
+    checkDeviceType() {
+      this.isMobile = window.innerWidth <= 768; 
+    }
+  }
 }
 </script>
 
@@ -43,7 +68,6 @@ export default {
 }
 
 .info {
-  display: flex;
   border: 2px solid #26b3de;
   border-radius: 20px;
   overflow: hidden; 
